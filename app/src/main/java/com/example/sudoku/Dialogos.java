@@ -22,35 +22,35 @@ public class Dialogos {
     private static CallbackDialogo callback;
 
     public static void coletarJogada(Context context, Button botao, Posicao posicao){
-        LayoutInflater layout = LayoutInflater.from(context);
 
         callback = (CallbackDialogo) context;
         TableLayout tabela = new TableLayout(context);
-        AlertDialog.Builder dialogo = new AlertDialog.Builder(context);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Selecione um Número: ");
 
-        dialogo.setTitle("Selecione um Número: ");
+        AlertDialog dialogo = builder.create();
 
-        dialogo.setPositiveButton("Ok", (dialog, which) ->  {
-            for(int i = 0; i < 3; i++){
-                TableRow linhaTabela = new TableRow(context);
-                for(int j = 0; j < 3; j++){
-                    Button botaoNumero = new Button(context);
-                    botaoNumero.setText(i+1);
-                    botaoNumero.setOnClickListener(new View.OnClickListener() {
-                        public void onClick(View v) {
-                            callback.callbackDialogo(botaoNumero.getText().toString(), botao, posicao);
-                        }
-                    });
-                    linhaTabela.addView(botaoNumero);
-                }
-                tabela.addView(linhaTabela);
+        int num = 1;
+        for(int i = 1; i <= 3; i++){
+            TableRow linhaTabela = new TableRow(context);
+            for(int j = 1; j <= 3; j++){
+                Button botaoNumero = new Button(context);
+                botaoNumero.setText(num+"");
+                num ++;
+                botaoNumero.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        callback.callbackDialogo(botaoNumero.getText().toString(), botao, posicao);
+                        dialogo.dismiss();
+                    }
+                });
+                linhaTabela.addView(botaoNumero);
             }
+            tabela.addView(linhaTabela);
+        }
 
-        });
-        dialogo.setNegativeButton("Cancelar", (dialog, which) -> {
-            dialog.dismiss();
-        });
+        dialogo.setView(tabela);
         dialogo.show();
+
     }
 
     public static void informar(Context context, String mensagem){
@@ -63,11 +63,11 @@ public class Dialogos {
 
     public static void informar(Context context, String titulo, String mensagem, DialogInterface.OnClickListener listener){
         new AlertDialog
-                .Builder(context)
-                .setTitle(titulo)
-                .setMessage( mensagem )
-                .setCancelable(false)
-                .setNeutralButton("Ok", listener)
-                .show();
+            .Builder(context)
+            .setTitle(titulo)
+            .setMessage( mensagem )
+            .setCancelable(false)
+            .setNeutralButton("Ok", listener)
+            .show();
     }
 }

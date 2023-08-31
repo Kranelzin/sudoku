@@ -17,14 +17,8 @@ public class CtrSudoku {
             for(int j = 0; j < tabuleiro[x].length; j++){
                 if(x == posicao.posicaoLinha && j == posicao.posicaoColuna){
                     tabuleiro[x][j] = Integer.parseInt(jogada);
-                    if(tabuleiro[x][j] == tabuleiroCompleto[x][j]){
-                        jogadasErradas[x][j] = 2;
-                        return;
-                    }
-                    else{
-                        jogadasErradas[x][j] = 1;
-                        return;
-                    }
+                    jogadasErradas[x][j] = tabuleiro[x][j] == tabuleiroCompleto[x][j] ? 2 : 1;
+                    return;
                 }
             }
         }
